@@ -1,6 +1,7 @@
 # Dependencies and build output
 react-dashboard/node_modules/
 react-dashboard/dist/
+react-dashboard.git-template-backup/
 
 # Source GIS archives and ArcGIS Pro workspace (keep local; export GeoJSON for the dashboard)
 DATA ASET UP3 GROGOT/
