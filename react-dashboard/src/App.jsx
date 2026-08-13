@@ -40,6 +40,7 @@ const [rows, setRows] = useState([]), [fileName, setFileName] = useState('Belum 
   const typeKey = useMemo(() => findColumn(keys, ['typegardu', 'line_type', 'feature', 'classification', 'status', 'category', 'kategori']) || keys[0], [keys])
   const nameKey = useMemo(() => findColumn(keys, ['namagardu', 'descriptiongardu', 'nama', 'namasegmen', 'locationgardu']) || keys[0], [keys])
   const capacityKey = useMemo(() => findColumn(keys, ['kapasitasmaximo', 'kapasitasbaru', 'kapasitas', 'capacity']), [keys])
+  const areaKey = useMemo(() => findColumn(keys, ['ulp', 'wilayah', 'area', 'city', 'kota', 'formattedaddress', 'location', 'locationgardu', 'streetaddress']), [keys])
   const filtered = useMemo(() => rows.filter(row => (!type || row[typeKey] === type) && (!query || Object.values(row).some(v => String(v ?? '').toLowerCase().includes(query.toLowerCase())))), [rows, type, typeKey, query])
   const points = useMemo(() => filtered.map(row => ({ row, lat: number(row[latKey]), lng: number(row[lngKey]) })).filter(p => p.lat && p.lng && Math.abs(p.lat) <= 90 && Math.abs(p.lng) <= 180), [filtered, latKey, lngKey])
   const categories = useMemo(() => grouped(rows, typeKey), [rows, typeKey])
