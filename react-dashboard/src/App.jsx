@@ -32,7 +32,7 @@ function pinIcon(type, active) { const color = TYPE_COLORS[type] || '#61758a'; r
 
 export default function App() {
 const [rows, setRows] = useState([]), [fileName, setFileName] = useState('Belum ada dataset')
-  const [query, setQuery] = useState(''), [type, setType] = useState(''), [basemap, setBasemap] = useState('street'), [selected, setSelected] = useState(null), [message, setMessage] = useState(''), [geoLayers, setGeoLayers] = useState([]), [zoomSignal, setZoomSignal] = useState(0)
+  const [query, setQuery] = useState(''), [type, setType] = useState(''), [area, setArea] = useState(''), [basemap, setBasemap] = useState('street'), [selected, setSelected] = useState(null), [message, setMessage] = useState(''), [geoLayers, setGeoLayers] = useState([]), [zoomSignal, setZoomSignal] = useState(0)
   const inputRef = useRef(), geoInputRef = useRef()
   const keys = useMemo(() => rows.length ? Object.keys(rows[0]) : [], [rows])
   const latKey = useMemo(() => findColumn(keys, ['latitude', 'lat']), [keys])
