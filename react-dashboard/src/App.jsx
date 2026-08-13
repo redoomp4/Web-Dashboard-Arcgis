@@ -47,7 +47,7 @@ const [rows, setRows] = useState([]), [fileName, setFileName] = useState('Belum 
   const capacity = filtered.reduce((total, row) => total + number(row[capacityKey]), 0)
   const readFile = useCallback(file => {
     if (!file) return
-    const done = data => { const clean = data.filter(row => Object.values(row).some(value => String(value ?? '').trim())); setRows(clean); setFileName(file.name); setQuery(''); setType(''); setSelected(null); setMessage(clean.length ? '' : 'Tidak ada baris data yang dapat dibaca.') }
+    const done = data => { const clean = data.filter(row => Object.values(row).some(value => String(value ?? '').trim())); setRows(clean); setFileName(file.name); setQuery(''); setType(''); setArea(''); setSelected(null); setMessage(clean.length ? '' : 'Tidak ada baris data yang dapat dibaca.') }
     if (/\.csv$/i.test(file.name)) Papa.parse(file, { header: true, skipEmptyLines: true, complete: result => done(result.data), error: () => setMessage('CSV tidak dapat dibaca.') })
     else { const reader = new FileReader(); reader.onload = event => { try { const book = XLSX.read(event.target.result, { type: 'array' }); done(XLSX.utils.sheet_to_json(book.Sheets[book.SheetNames[0]], { defval: '' })) } catch { setMessage('Excel tidak dapat dibaca. Pastikan menggunakan .xlsx atau .xls.') } }; reader.readAsArrayBuffer(file) }
   }, [])
