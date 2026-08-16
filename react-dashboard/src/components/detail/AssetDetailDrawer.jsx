@@ -3,6 +3,7 @@ import { Icon } from '../common/Icons';
 import { convertDDtoDMS, convertDDtoUTM } from '../../utils/gisCalculations';
 import { TYPE_COLORS } from '../../constants/config';
 import { toNumber } from '../../utils/dataParser';
+import { getSimulatedLoadPercent, getLoadStatus, getPhaseLoading } from '../../utils/loadSimulation';
 
 export function AssetDetailDrawer({
   selected,
@@ -29,18 +30,15 @@ export function AssetDetailDrawer({
   const dms = convertDDtoDMS(lat, lng);
   const utm = convertDDtoUTM(lat, lng);
 
-
-  // Simulated operational load (e.g. 68% load factor)
-  const simulatedLoadPercent = capVal > 0 ? ((nameVal.length * 13) % 45) + 40 : 50;
-  const loadStatus =
-    simulatedLoadPercent > 85 ? 'Kritis' : simulatedLoadPercent > 70 ? 'Tinggi' : 'Normal (Optimal)';
-  const loadStatusColor =
-    simulatedLoadPercent > 85 ? '#ef4444' : simulatedLoadPercent > 70 ? '#f59e0b' : '#10b981';
+  const simulatedLoadPercent = getSimulatedLoadPercent(nameVal, capVal);
+  const { status: loadStatus, color: loadStatusColor } = getLoadStatus(simulatedLoadPercent);
+  const phaseLoad = getPhaseLoading(simulatedLoadPercent, capVal);
 
   const copyToClipboard = (text, label) => {
     navigator.clipboard.writeText(text);
     if (onCopySuccess) onCopySuccess(`${label} berhasil disalin ke clipboard!`);
   };
+
 
   const openGoogleMaps = () => {
     window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
@@ -107,6 +105,12 @@ export function AssetDetailDrawer({
           <div className="load-meter-details">
             <small>Daya Terpasang: <b>{capVal} kVA</b></small>
             <small>Taksiran Beban: <b>{Math.round((capVal * simulatedLoadPercent) / 100)} kVA</b></small>
+          </div>
+          <div className="phase-loads-detail" style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: 'var(--text-muted)' }}>
+            <span>Ph. R: <b>{phaseLoad.r} kVA</b></span>
+            <span>Ph. S: <b>{phaseLoad.s} kVA</b></span>
+            <span>Ph. T: <b>{phaseLoad.t} kVA</b></span>
+            <span title="Ketidakseimbangan Beban">Imb: <b>{phaseLoad.imbalancePercent}%</b></span>
           </div>
         </div>
       )}
