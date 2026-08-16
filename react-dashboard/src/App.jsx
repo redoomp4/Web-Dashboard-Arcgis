@@ -8,6 +8,7 @@ import './styles/design-system.css';
 // Hooks
 import { useTheme } from './hooks/useTheme';
 import { useToast } from './hooks/useToast';
+import { useDebounce } from './hooks/useDebounce';
 
 // Components
 import { ToastContainer } from './components/common/ToastContainer';
@@ -50,6 +51,7 @@ export default function App() {
 
   // Filters State
   const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
   const [area, setArea] = useState('');
   const [type, setType] = useState('');
   const [feeder, setFeeder] = useState('');
@@ -142,8 +144,8 @@ export default function App() {
       if (area && String(row[areaKey] || '').trim() !== area) return false;
       if (type && (row[typeKey] || 'Tidak diisi') !== type) return false;
       if (feeder && String(row[feederKey] || '').trim() !== feeder) return false;
-      if (query) {
-        const q = query.toLowerCase();
+      if (debouncedQuery) {
+        const q = debouncedQuery.toLowerCase();
         const hasMatch = Object.values(row).some(v =>
           String(v ?? '').toLowerCase().includes(q)
         );
@@ -151,7 +153,7 @@ export default function App() {
       }
       return true;
     });
-  }, [rows, area, type, feeder, query, areaKey, typeKey, feederKey]);
+  }, [rows, area, type, feeder, debouncedQuery, areaKey, typeKey, feederKey]);
 
   // Sorted Rows
   const sortedRows = useMemo(() => {
@@ -203,7 +205,7 @@ export default function App() {
   // Reset page when filters change
   useEffect(() => {
     setPage(1);
-  }, [query, area, type, feeder]);
+  }, [debouncedQuery, area, type, feeder]);
 
   // 6. Data Ingestion Handlers
   const handleReadFile = useCallback(file => {
