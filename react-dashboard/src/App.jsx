@@ -380,6 +380,7 @@ export default function App() {
           isDark={isDark}
           capacityTier={capacityTier}
           setCapacityTier={setCapacityTier}
+          capacityKey={capacityKey}
         />
 
         {/* Main Content */}
