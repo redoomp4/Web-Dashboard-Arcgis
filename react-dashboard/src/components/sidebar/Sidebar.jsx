@@ -24,9 +24,11 @@ export function Sidebar({
   trendData,
   onResetFilters,
   onUploadClick,
-  isDark
+  isDark,
+  capacityTier,
+  setCapacityTier
 }) {
-  const hasActiveFilters = Boolean(query || area || type || feeder);
+  const hasActiveFilters = Boolean(query || area || type || feeder || capacityTier);
 
   return (
     <aside className="app-sidebar">
@@ -53,6 +55,8 @@ export function Sidebar({
         feederKey={feederKey}
         onResetFilters={onResetFilters}
         hasActiveFilters={hasActiveFilters}
+        capacityTier={capacityTier}
+        setCapacityTier={setCapacityTier}
       />
 
       <ChartTabs
