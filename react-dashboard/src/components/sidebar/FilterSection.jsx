@@ -1,4 +1,5 @@
 import { Icon } from '../common/Icons';
+import { CAPACITY_TIERS } from '../../constants/config';
 
 export function FilterSection({
   query,
@@ -15,7 +16,9 @@ export function FilterSection({
   areaKey,
   feederKey,
   onResetFilters,
-  hasActiveFilters
+  hasActiveFilters,
+  capacityTier,
+  setCapacityTier
 }) {
   return (
     <section className="sidebar-filter-card">
@@ -105,6 +108,24 @@ export function FilterSection({
           {types.map(([typeName, count]) => (
             <option key={typeName} value={typeName}>
               {typeName} ({count})
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="filter-form-group">
+        <label htmlFor="capacity-tier-select">
+          <span>Kapasitas Daya (kVA)</span>
+        </label>
+        <select
+          id="capacity-tier-select"
+          value={capacityTier}
+          onChange={e => setCapacityTier(e.target.value)}
+        >
+          <option value="">Semua Kapasitas</option>
+          {CAPACITY_TIERS.map(tier => (
+            <option key={tier.label} value={tier.label}>
+              {tier.label}
             </option>
           ))}
         </select>
