@@ -98,3 +98,60 @@ export function filterPointsInRadius(points, centerLat, centerLng, radiusKm) {
     return dist <= radiusKm;
   });
 }
+
+/**
+ * Convert Lat/Lng decimal degrees to UTM coordinates (Universal Transverse Mercator)
+ */
+export function convertDDtoUTM(lat, lng) {
+  const zone = Math.floor((lng + 180) / 6) + 1;
+  const isSouth = lat < 0;
+  
+  const a = 6378137.0;
+  const f = 1.0 / 298.257223563;
+  const k0 = 0.9996;
+  
+  const b = a * (1 - f);
+  const esq = (a*a - b*b) / (a*a);
+  const eprimeSqr = (a*a - b*b) / (b*b);
+  
+  const latRad = (lat * Math.PI) / 180;
+  const lngRad = (lng * Math.PI) / 180;
+  const lngOriginRad = (((zone - 1) * 6 - 180 + 3) * Math.PI) / 180;
+  
+  const N = a / Math.sqrt(1 - esq * Math.sin(latRad) * Math.sin(latRad));
+  const T = Math.tan(latRad) * Math.tan(latRad);
+  const C = eprimeSqr * Math.cos(latRad) * Math.cos(latRad);
+  const A = Math.cos(latRad) * (lngRad - lngOriginRad);
+  
+  const M = a * (
+    (1 - esq/4 - 3*esq*esq/64 - 5*esq*esq*esq/256) * latRad -
+    (3*esq/8 + 3*esq*esq/32 + 45*esq*esq*esq/1024) * Math.sin(2*latRad) +
+    (15*esq*esq/256 + 45*esq*esq*esq/1024) * Math.sin(4*latRad) -
+    (35*esq*esq*esq/3072) * Math.sin(6*latRad)
+  );
+  
+  let easting = k0 * N * (
+    A + (1 - T + C) * A*A*A / 6 +
+    (5 - 18*T + T*T + 72*C - 58*eprimeSqr) * A*A*A*A*A / 120
+  ) + 500000.0;
+  
+  let northing = k0 * (
+    M + N * Math.tan(latRad) * (
+      A*A / 2 +
+      (5 - T + 9*C + 4*C*C) * A*A*A*A / 24 +
+      (61 - 58*T + T*T + 600*C - 330*eprimeSqr) * A*A*A*A*A*A / 720
+    )
+  );
+  
+  if (isSouth) {
+    northing += 10000000.0;
+  }
+  
+  return {
+    easting: Math.round(easting),
+    northing: Math.round(northing),
+    zone: `${zone}${isSouth ? 'S' : 'N'}`,
+    formatted: `UTM Zone ${zone}${isSouth ? 'S' : 'N'} E: ${Math.round(easting)} N: ${Math.round(northing)}`
+  };
+}
+
