@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Icon } from '../common/Icons';
-import { convertDDtoDMS } from '../../utils/gisCalculations';
+import { convertDDtoDMS, convertDDtoUTM } from '../../utils/gisCalculations';
 import { TYPE_COLORS } from '../../constants/config';
 import { toNumber } from '../../utils/dataParser';
 
@@ -27,6 +27,8 @@ export function AssetDetailDrawer({
   const feederVal = feederKey ? row[feederKey] : 'Tidak diisi';
   const typeColor = TYPE_COLORS[typeVal] || '#0284c7';
   const dms = convertDDtoDMS(lat, lng);
+  const utm = convertDDtoUTM(lat, lng);
+
 
   // Simulated operational load (e.g. 68% load factor)
   const simulatedLoadPercent = capVal > 0 ? ((nameVal.length * 13) % 45) + 40 : 50;
@@ -178,6 +180,20 @@ export function AssetDetailDrawer({
                 className="btn-copy-mini"
                 onClick={() => copyToClipboard(dms.formatted, 'Koordinat DMS')}
                 title="Salin Koordinat DMS"
+              >
+                Salin
+              </button>
+            </div>
+
+            <div className="coord-row-item">
+              <div>
+                <span className="coord-type-label">Proyeksi UTM (Zone {utm.zone})</span>
+                <b className="coord-val-text">E: {utm.easting} N: {utm.northing}</b>
+              </div>
+              <button
+                className="btn-copy-mini"
+                onClick={() => copyToClipboard(utm.formatted, 'Koordinat UTM')}
+                title="Salin Koordinat UTM"
               >
                 Salin
               </button>
