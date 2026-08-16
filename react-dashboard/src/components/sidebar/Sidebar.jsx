@@ -2,6 +2,7 @@ import { DatasetUploadCard } from './DatasetUploadCard';
 import { FilterSection } from './FilterSection';
 import { ChartTabs } from './ChartTabs';
 import { AssetTypeLegend } from './AssetTypeLegend';
+import { CapacityTierLegend } from './CapacityTierLegend';
 
 export function Sidebar({
   fileName,
@@ -26,7 +27,8 @@ export function Sidebar({
   onUploadClick,
   isDark,
   capacityTier,
-  setCapacityTier
+  setCapacityTier,
+  capacityKey
 }) {
   const hasActiveFilters = Boolean(query || area || type || feeder || capacityTier);
 
@@ -70,6 +72,13 @@ export function Sidebar({
         categories={categories}
         selectedType={type}
         onSelectType={setType}
+      />
+
+      <CapacityTierLegend
+        rows={rows}
+        capacityKey={capacityKey}
+        selectedTier={capacityTier}
+        onSelectTier={setCapacityTier}
       />
     </aside>
   );
