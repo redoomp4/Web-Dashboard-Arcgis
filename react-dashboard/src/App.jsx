@@ -37,6 +37,7 @@ import {
 import {
   filterPointsInRadius
 } from './utils/gisCalculations';
+import { CAPACITY_TIERS } from './constants/config';
 
 export default function App() {
   // Theme & Notifications
@@ -53,6 +54,7 @@ export default function App() {
   const [area, setArea] = useState('');
   const [type, setType] = useState('');
   const [feeder, setFeeder] = useState('');
+  const [capacityTier, setCapacityTier] = useState('');
 
   // Table & View State
   const [viewMode, setViewMode] = useState('table'); // 'table' | 'card'
@@ -142,6 +144,13 @@ export default function App() {
       if (area && String(row[areaKey] || '').trim() !== area) return false;
       if (type && (row[typeKey] || 'Tidak diisi') !== type) return false;
       if (feeder && String(row[feederKey] || '').trim() !== feeder) return false;
+      if (capacityTier && capacityKey) {
+        const tier = CAPACITY_TIERS.find(t => t.label === capacityTier);
+        if (tier) {
+          const cap = toNumber(row[capacityKey]);
+          if (cap < tier.min || cap > tier.max) return false;
+        }
+      }
       if (query) {
         const q = query.toLowerCase();
         const hasMatch = Object.values(row).some(v =>
@@ -151,7 +160,7 @@ export default function App() {
       }
       return true;
     });
-  }, [rows, area, type, feeder, query, areaKey, typeKey, feederKey]);
+  }, [rows, area, type, feeder, query, capacityTier, areaKey, typeKey, feederKey, capacityKey]);
 
   // Sorted Rows
   const sortedRows = useMemo(() => {
@@ -365,9 +374,12 @@ export default function App() {
             setArea('');
             setType('');
             setFeeder('');
+            setCapacityTier('');
           }}
           onUploadClick={() => fileInputRef.current?.click()}
           isDark={isDark}
+          capacityTier={capacityTier}
+          setCapacityTier={setCapacityTier}
         />
 
         {/* Main Content */}
