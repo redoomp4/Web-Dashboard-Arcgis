@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useLocalStorage } from './useLocalStorage';
 
 export function useTheme() {
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('pln_dashboard_theme');
-    if (saved) return saved;
+  const [theme, setTheme] = useLocalStorage('pln_dashboard_theme', () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('pln_dashboard_theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -23,3 +21,4 @@ export function useTheme() {
     setTheme
   };
 }
+
