@@ -8,6 +8,7 @@ import { SpatialRadiusFilter } from './SpatialRadiusFilter';
 import { HeatmapLayer } from './HeatmapLayer';
 import { LayerLegendDrawer } from './LayerLegendDrawer';
 import { CoordinateTracker } from './CoordinateTracker';
+import { MapOutageOverlay } from './MapOutageOverlay';
 import { createPinIcon, geocodeResultIcon } from './CustomPins';
 import { BASEMAPS } from '../../constants/config';
 import { Icon } from '../common/Icons';
@@ -36,7 +37,10 @@ export function MapContainerWrapper({
   spatialRadiusKm,
   setSpatialRadiusKm,
   nearbyPoints,
-  nearbyCapacity
+  nearbyCapacity,
+  // Outage simulation props
+  activeOutage,
+  onClearOutage
 }) {
   const [measureMode, setMeasureMode] = useState(null); // 'distance' | 'area' | null
   const [heatmapActive, setHeatmapActive] = useState(false);
