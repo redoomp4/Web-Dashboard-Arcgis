@@ -8,6 +8,9 @@ export function Header({
   onGeoUploadClick,
   onOpenAnomalyModal,
   onOpenAnalyticsModal,
+  onOpenOutageModal,
+  onOpenHealthModal,
+  onOpenCoordFlyerModal,
   anomalyCount = 0,
   qualityScore = 100,
   datasetName
@@ -30,11 +33,29 @@ export function Header({
       <div className="header-center-metrics">
         <button
           className="header-metric-pill"
+          onClick={onOpenOutageModal}
+          title="Simulasi Pemadaman Jaringan & Manuver Saklar Beban"
+        >
+          <Icon name="bolt" size={15} color="#ef4444" />
+          <span>Simulasi Gangguan</span>
+        </button>
+
+        <button
+          className="header-metric-pill"
+          onClick={onOpenHealthModal}
+          title="Diagnostik Indeks Kesehatan Armada Trafo (THI)"
+        >
+          <Icon name="activity" size={15} color="#10b981" />
+          <span>Kesehatan Trafo</span>
+        </button>
+
+        <button
+          className="header-metric-pill"
           onClick={onOpenAnalyticsModal}
           title="Buka Analytics Deep Dive"
         >
-          <Icon name="activity" size={15} />
-          <span>Analisis Beban & Jaringan</span>
+          <Icon name="bar-chart" size={15} />
+          <span>Analisis Beban</span>
         </button>
 
         <button
@@ -43,7 +64,7 @@ export function Header({
           title="Buka Auditor Kualitas Data Spasial"
         >
           <Icon name="alert-triangle" size={15} />
-          <span>Kualitas Data: <b>{qualityScore}%</b></span>
+          <span>Integritas GIS: <b>{qualityScore}%</b></span>
           {anomalyCount > 0 && <span className="badge-count">{anomalyCount}</span>}
         </button>
       </div>
