@@ -4,6 +4,7 @@ import { convertDDtoDMS, convertDDtoUTM } from '../../utils/gisCalculations';
 import { TYPE_COLORS } from '../../constants/config';
 import { toNumber } from '../../utils/dataParser';
 import { getSimulatedLoadPercent, getLoadStatus, getPhaseLoading } from '../../utils/loadSimulation';
+import { calculateTransformerHealth } from '../../utils/healthIndex';
 
 export function AssetDetailDrawer({
   selected,
@@ -33,12 +34,19 @@ export function AssetDetailDrawer({
   const simulatedLoadPercent = getSimulatedLoadPercent(nameVal, capVal);
   const { status: loadStatus, color: loadStatusColor } = getLoadStatus(simulatedLoadPercent);
   const phaseLoad = getPhaseLoading(simulatedLoadPercent, capVal);
+  const health = calculateTransformerHealth(row, { nameKey, capacityKey, typeKey });
 
   const copyToClipboard = (text, label) => {
     navigator.clipboard.writeText(text);
     if (onCopySuccess) onCopySuccess(`${label} berhasil disalin ke clipboard!`);
   };
 
+  const copyShareableLink = () => {
+    const url = new URL(window.location.href);
+    url.hash = `asset=${encodeURIComponent(nameVal)}`;
+    navigator.clipboard.writeText(url.href);
+    if (onCopySuccess) onCopySuccess(`Link lokasi ${nameVal} berhasil disalin!`);
+  };
 
   const openGoogleMaps = () => {
     window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
@@ -77,10 +85,30 @@ export function AssetDetailDrawer({
           <Icon name="compass" size={14} />
           <span>Google Maps</span>
         </button>
+        <button className="btn-drawer-action" onClick={copyShareableLink} title="Salin Tautan Langsung ke Aset Ini">
+          <Icon name="upload" size={14} />
+          <span>Bagi Link</span>
+        </button>
         <button className="btn-drawer-action" onClick={onInspectRadius} title="Inspeksi Radius Jangkauan Sekitar Gardu">
           <Icon name="radius" size={14} />
           <span>Buffer Radius</span>
         </button>
+      </div>
+
+      {/* Transformer Health Index Badge Card */}
+      <div className="drawer-health-index-card">
+        <div className="health-index-header">
+          <div className="health-title-row">
+            <Icon name="activity" size={14} color={health.statusColor} />
+            <span>Indeks Kesehatan Trafo (THI):</span>
+          </div>
+          <span className="health-score-text" style={{ color: health.statusColor }}>
+            <b>{health.score}%</b> ({health.urgency})
+          </span>
+        </div>
+        <div className="health-status-desc">
+          <small>{health.recommendation}</small>
+        </div>
       </div>
 
       {/* Simulated Operational Load Banner */}
