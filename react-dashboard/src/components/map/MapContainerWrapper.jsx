@@ -129,6 +129,11 @@ export function MapContainerWrapper({
 
             <HeatmapLayer points={points} active={heatmapActive} />
 
+            <MapOutageOverlay
+              activeOutage={activeOutage}
+              onClearOutage={onClearOutage}
+            />
+
             {/* Geocode Search Pin */}
             {geocodeResult && (
               <Marker position={[geocodeResult.lat, geocodeResult.lng]} icon={geocodeResultIcon}>
