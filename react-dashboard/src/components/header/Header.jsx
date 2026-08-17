@@ -81,6 +81,15 @@ export function Header({
 
         <button
           className="btn-header-secondary"
+          onClick={onOpenCoordFlyerModal}
+          title="Lompat ke Koordinat Manual (DD / UTM)"
+        >
+          <Icon name="compass" size={15} />
+          <span>Lompat Koordinat</span>
+        </button>
+
+        <button
+          className="btn-header-secondary"
           onClick={onGeoUploadClick}
           title="Import Layer GeoJSON / ESRI JSON"
         >
