@@ -2442,6 +2442,364 @@ input, select, textarea {
 }
 
 /* ==========================================================================
+   ENTERPRISE OUTAGE & HEALTH INDEX MODALS & CONTROLS
+   ========================================================================== */
+.drawer-health-index-card {
+  background: var(--bg-surface-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+
+.health-index-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.health-title-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.health-score-text b {
+  font-size: 13px;
+}
+
+.health-status-desc small {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Outage Modal Window */
+.outage-modal-window, .health-modal-window {
+  width: clamp(320px, 94vw, 920px);
+}
+
+.outage-header {
+  border-bottom: 2px solid rgba(239, 68, 68, 0.2);
+}
+.health-header {
+  border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+}
+
+.outage-badge {
+  background: rgba(239, 68, 68, 0.12);
+}
+.health-badge {
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.outage-select-card {
+  background: var(--bg-surface-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.outage-select-card label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.outage-dropdown {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 700;
+}
+.outage-dropdown:focus {
+  outline: none;
+  border-color: #ef4444;
+}
+
+.outage-stat-box.red { border-left: 4px solid #ef4444; }
+.outage-stat-box.amber { border-left: 4px solid #f59e0b; }
+.outage-stat-box.blue { border-left: 4px solid #0284c7; }
+
+.outage-maneuver-panel {
+  background: var(--bg-surface-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.backup-feeders-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.backup-feeder-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.backup-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.backup-rank-badge {
+  font-size: 10px;
+  font-weight: 800;
+  background: var(--pln-blue-light);
+  color: var(--pln-blue);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.backup-status-tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+}
+.tag-green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.tag-orange { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+.backup-metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.backup-metrics-row b {
+  color: var(--text-main);
+}
+
+.btn-outage-apply {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-outage-apply:hover {
+  background: #b91c1c;
+}
+
+/* Health Modal elements */
+.health-score-banner {
+  border-left: 4px solid #10b981;
+}
+
+.cat-count-badge.red { background: #ef4444; color: #fff; }
+.cat-count-badge.amber { background: #f59e0b; color: #fff; }
+.cat-count-badge.blue { background: #0284c7; color: #fff; }
+.cat-count-badge.green { background: #10b981; color: #fff; }
+
+.health-records-container {
+  max-height: 340px;
+}
+
+.health-record-card {
+  align-items: flex-start;
+}
+
+.health-record-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.health-score-pill {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.record-feeder-tag {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
+.health-recommendation-text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-main);
+  margin: 2px 0;
+}
+
+.health-technical-metrics {
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.health-technical-metrics b {
+  color: var(--text-main);
+}
+
+/* Coordinate Flyer Modal */
+.coord-flyer-window {
+  width: clamp(320px, 90vw, 500px);
+}
+
+.coord-flyer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coord-type-tabs {
+  display: flex;
+  background: var(--bg-surface-secondary);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  margin: 14px 24px 0;
+  gap: 4px;
+}
+
+.coord-input-fields {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coord-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-secondary);
+  color: var(--text-main);
+  font-size: 12px;
+}
+.coord-input:focus {
+  outline: none;
+  border-color: var(--pln-blue);
+  background: var(--bg-surface);
+}
+
+.coord-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.form-error-banner {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  margin: 0 24px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Map Outage Banner Overlay */
+.map-outage-banner {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 500;
+  background: rgba(15, 23, 42, 0.94);
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-xl);
+  border: 1.5px solid #ef4444;
+  backdrop-filter: blur(6px);
+}
+
+.outage-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.outage-live-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444;
+  animation: pulse-ring 1.2s infinite;
+}
+
+.outage-banner-left strong {
+  display: block;
+  font-size: 12px;
+  color: #fca5a5;
+}
+.outage-banner-left small {
+  font-size: 10px;
+  color: #cbd5e1;
+}
+
+.btn-outage-clear {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+}
+.btn-outage-clear:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Outage Blackout Pin on map */
+.outage-blackout-pin {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid #ffffff;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.8);
+}
+
+.blackout-pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid #ef4444;
+  animation: pulse-ring 1.5s infinite;
+}
+
+/* ==========================================================================
    PRINT STYLES
    ========================================================================== */
 @media print {
@@ -2451,7 +2809,8 @@ input, select, textarea {
   .table-header-toolbar,
   .table-pagination-footer,
   .asset-detail-drawer-panel,
-  .toast-container {
+  .toast-container,
+  .map-outage-banner {
     display: none !important;
   }
   .pln-workspace-grid {
@@ -2464,3 +2823,4 @@ input, select, textarea {
     height: 350px;
   }
 }
+
