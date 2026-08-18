@@ -8,6 +8,7 @@ import './styles/design-system.css';
 // Hooks
 import { useTheme } from './hooks/useTheme';
 import { useToast } from './hooks/useToast';
+import { useUrlState } from './hooks/useUrlState';
 
 // Components
 import { ToastContainer } from './components/common/ToastContainer';
@@ -22,6 +23,9 @@ import { AssetCardGrid } from './components/table/AssetCardGrid';
 import { ColumnPickerModal } from './components/table/ColumnPickerModal';
 import { AssetDetailDrawer } from './components/detail/AssetDetailDrawer';
 import { AnomalyDetectorModal } from './components/modals/AnomalyDetectorModal';
+import { OutageSimulationModal } from './components/modals/OutageSimulationModal';
+import { HealthIndexModal } from './components/modals/HealthIndexModal';
+import { CoordinateFlyerModal } from './components/map/CoordinateFlyerModal';
 
 // Utilities
 import {
