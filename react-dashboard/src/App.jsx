@@ -583,6 +583,41 @@ export default function App() {
         }}
       />
 
+      <OutageSimulationModal
+        isOpen={isOutageModalOpen}
+        onClose={() => setIsOutageModalOpen(false)}
+        feeders={feeders}
+        allRows={rows}
+        mappings={mappings}
+        onApplyOutageOnMap={simulation => {
+          setActiveOutage(simulation);
+          if (simulation.outageCentroid) {
+            setTargetLocation({ lat: simulation.outageCentroid.lat, lng: simulation.outageCentroid.lng, zoom: 13 });
+          }
+          toastWarning(`Mode Simulasi Padam aktif untuk Penyulang ${simulation.trippedFeeder} (${simulation.affectedCount} Gardu Terdampak)`);
+        }}
+      />
+
+      <HealthIndexModal
+        isOpen={isHealthModalOpen}
+        onClose={() => setIsHealthModalOpen(false)}
+        allRows={rows}
+        mappings={mappings}
+        onSelectCriticalAsset={row => {
+          handleSelectRow(row);
+          toastWarning(`Inspeksi Trafo Kritis: ${row[nameKey] || 'Unit'}`);
+        }}
+      />
+
+      <CoordinateFlyerModal
+        isOpen={isCoordFlyerModalOpen}
+        onClose={() => setIsCoordFlyerModalOpen(false)}
+        onFlyToCoordinates={loc => {
+          setTargetLocation(loc);
+          toastSuccess(`Menerbangkan peta ke lokasi: ${loc.label || 'Koordinat Lapangan'}`);
+        }}
+      />
+
       {/* Floating Notifications */}
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
