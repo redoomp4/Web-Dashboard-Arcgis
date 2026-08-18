@@ -82,6 +82,10 @@ export default function App() {
   const [isColumnPickerOpen, setIsColumnPickerOpen] = useState(false);
   const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
   const [isAnomalyModalOpen, setIsAnomalyModalOpen] = useState(false);
+  const [isOutageModalOpen, setIsOutageModalOpen] = useState(false);
+  const [isHealthModalOpen, setIsHealthModalOpen] = useState(false);
+  const [isCoordFlyerModalOpen, setIsCoordFlyerModalOpen] = useState(false);
+  const [activeOutage, setActiveOutage] = useState(null);
 
   const fileInputRef = useRef(null);
   const geoInputRef = useRef(null);
@@ -90,6 +94,16 @@ export default function App() {
   const keys = useMemo(() => (rows.length ? Object.keys(rows[0]) : []), [rows]);
   const mappings = useMemo(() => detectColumnMappings(keys), [keys]);
   const { latKey, lngKey, nameKey, typeKey, capacityKey, areaKey, feederKey, dateKey } = mappings;
+
+  // URL Hash Deep-linking
+  useUrlState({
+    selectedAsset,
+    nameKey,
+    feeder,
+    area,
+    type,
+    viewMode
+  });
 
   // Initialize visible columns
   useEffect(() => {
@@ -329,6 +343,9 @@ export default function App() {
         onGeoUploadClick={() => geoInputRef.current?.click()}
         onOpenAnomalyModal={() => setIsAnomalyModalOpen(true)}
         onOpenAnalyticsModal={() => setIsAnalyticsModalOpen(true)}
+        onOpenOutageModal={() => setIsOutageModalOpen(true)}
+        onOpenHealthModal={() => setIsHealthModalOpen(true)}
+        onOpenCoordFlyerModal={() => setIsCoordFlyerModalOpen(true)}
         anomalyCount={auditResult?.totalIssues || 0}
         qualityScore={auditResult?.qualityScore ?? 100}
         datasetName={fileName}
