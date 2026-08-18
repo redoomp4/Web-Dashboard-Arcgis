@@ -443,6 +443,8 @@ export default function App() {
             setSpatialRadiusKm={setSpatialRadiusKm}
             nearbyPoints={nearbyPoints}
             nearbyCapacity={nearbyCapacity}
+            activeOutage={activeOutage}
+            onClearOutage={() => setActiveOutage(null)}
           />
 
           {/* Data Table & Card Grid Section */}
